@@ -126,23 +126,23 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 7: Implement and Validate the Gymnasium Environment
 
-- [ ] Wrap the simulator inside a custom Gymnasium environment.
-- [ ] Implement `reset()`.
-- [ ] Implement `step()`.
-- [ ] Return observations in the planned format.
-- [ ] Return rewards in the planned format.
-- [ ] Return termination and truncation flags correctly.
-- [ ] Include useful `info` fields for debugging.
-- [ ] Run environment smoke tests.
-- [ ] Run short manual episodes to inspect transitions.
+- [x] Wrap the simulator inside a custom Gymnasium environment.
+- [x] Implement `reset()`.
+- [x] Implement `step()`.
+- [x] Return observations in the planned format.
+- [x] Return rewards in the planned format.
+- [x] Return termination and truncation flags correctly.
+- [x] Include useful `info` fields for debugging.
+- [x] Run environment smoke tests.
+- [x] Run short manual episodes to inspect transitions.
 
 ### Validation
 
-- [ ] The environment resets without error.
-- [ ] A valid action updates the board correctly.
-- [ ] Invalid actions are handled exactly as designed.
-- [ ] Win, loss, and draw states produce the expected outputs.
-- [ ] The environment can run for multiple episodes in a row without leaking state.
+- [x] The environment resets without error.
+- [x] A valid action updates the board correctly.
+- [x] Invalid actions are handled exactly as designed.
+- [x] Win, loss, and draw states produce the expected outputs.
+- [x] The environment can run for multiple episodes in a row without leaking state.
 
 ## Phase 8: Notebook Structure and Training Setup
 

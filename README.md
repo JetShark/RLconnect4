@@ -772,3 +772,63 @@ Phase 6 is complete when:
 - `info` fields are defined for debugging and evaluation support
 - reward, termination, and truncation behavior are fixed for the baseline environment
 - action masking is explicitly deferred as a later extension rather than left ambiguous
+
+## Phase 7: Implement and Validate the Gymnasium Environment
+
+### Implemented Files
+
+- `connect4_env.py`: contains the `Connect4Env` Gymnasium wrapper
+- `tests/test_connect4_env.py`: contains environment validation tests
+- `requirements.txt`: records the baseline Gymnasium and NumPy dependencies
+
+### Implemented Environment Behavior
+
+The Gymnasium environment now includes:
+
+- a `Discrete(7)` action space mapped directly to the seven columns
+- a `Dict` observation containing the board array and current-player indicator
+- Gymnasium-compatible `reset()` behavior with observation and `info` output
+- `step()` behavior that applies one agent move and then one opponent move when the game continues
+- invalid-action handling that returns reward `-1.0` and ends the episode
+- sparse terminal rewards for win, loss, and draw outcomes
+- `info` fields for legal actions, winner, draw status, last move, invalid actions, and opponent action
+- text rendering delegated to the underlying simulator
+
+### Implementation Notes
+
+The environment wraps `Connect4Game` directly and does not reimplement move legality or win detection.
+
+The default opponent policy is random over legal actions. The implementation also allows an opponent policy to be injected when constructing `Connect4Env`, which keeps the baseline behavior unchanged while making environment tests deterministic and easier to validate.
+
+### Implemented Validation Coverage
+
+The environment test suite now validates:
+
+- `reset()` returns the expected initial observation and `info`
+- a valid agent action updates the board correctly and triggers the opponent turn
+- invalid actions return the documented negative terminal transition
+- an agent win returns reward `+1.0`
+- an opponent win returns reward `-1.0`
+- a draw returns reward `0.0`
+- repeated resets do not leak episode state between runs
+
+### Validation Result
+
+Phase 7 validation was completed by running the full unit test suite for both the simulator and environment.
+
+Current result:
+- 20 tests run
+- 20 tests passed
+- 0 failures
+- 0 errors
+
+### Phase 7 Exit Criteria
+
+Phase 7 is complete when:
+
+- the simulator is wrapped inside a reusable Gymnasium environment
+- `reset()` and `step()` follow the Phase 6 design
+- observations, rewards, and terminal flags match the documented baseline contract
+- invalid moves are handled consistently without bypassing simulator rules
+- the environment can run across repeated episodes without leaking state
+- automated tests cover reset behavior, normal transitions, and terminal outcomes
