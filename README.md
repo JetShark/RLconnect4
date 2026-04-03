@@ -893,3 +893,82 @@ Phase 8 is complete when:
 - baseline library choices and seed settings are recorded explicitly
 - the notebook is usable as both a build artifact and a presentation artifact
 - later training and evaluation work can be added without restructuring the notebook
+
+## Phase 9: Initial Training Run
+
+### Implemented Files
+
+- `connect4_rl_tutorial.ipynb`: now contains the baseline DQN training run, metric logging, result summary, and plots
+- `requirements.txt`: now includes `stable-baselines3` and `torch` for the training stack
+- `models/connect4_dqn_phase9.zip`: saved model checkpoint from the baseline training run
+
+### Algorithm Choice
+
+The first RL algorithm is a baseline `DQN` agent using Stable-Baselines3 with the `MultiInputPolicy` policy type.
+
+This is a reasonable first choice because:
+
+- the action space is discrete
+- the observation is a small dictionary with board and current-player data
+- DQN is easy to explain in a short tutorial compared with more advanced methods
+- it is sufficient for demonstrating an end-to-end RL training loop in the assignment scope
+
+### Baseline Training Configuration
+
+The first training run used the following baseline setup:
+
+- opponent: random legal-action policy
+- total timesteps: `2000`
+- evaluation interval: `500` timesteps
+- evaluation episodes per window: `20`
+- learning rate: `1e-4`
+- replay buffer size: `5000`
+- learning starts: `100`
+- batch size: `64`
+- discount factor: `0.99`
+- train frequency: `4`
+- target update interval: `250`
+- exploration fraction: `0.3`
+- final exploration epsilon: `0.05`
+- seed: `7`
+
+This configuration is intentionally small so the notebook run finishes quickly and produces usable outputs for the tutorial.
+
+### Logged Outputs
+
+The notebook now records:
+
+- mean evaluation reward per evaluation window
+- win rate against the random opponent
+- draw rate
+- invalid-action count during evaluation
+- recent training reward from the monitor wrapper
+- a saved model checkpoint for later evaluation
+
+### Validation Result
+
+Phase 9 validation was completed by running the baseline DQN training cell in the notebook end to end.
+
+Observed metrics over the run:
+
+- at `500` timesteps: mean evaluation reward `0.6`, win rate `0.8`, draw rate `0.0`, invalid-action count `4`
+- at `1000` timesteps: mean evaluation reward `0.6`, win rate `0.8`, draw rate `0.0`, invalid-action count `4`
+- at `1500` timesteps: mean evaluation reward `0.8`, win rate `0.9`, draw rate `0.0`, invalid-action count `2`
+- at `2000` timesteps: mean evaluation reward `0.8`, win rate `0.9`, draw rate `0.0`, invalid-action count `2`
+
+Interpretation:
+
+- the run completed successfully from initialization through checkpoint saving
+- the evaluation metrics show early improvement against the random opponent
+- recent training reward remained noisy at `-1.0`, which is useful to discuss as a sign that learning is still unstable during exploration
+
+### Phase 9 Exit Criteria
+
+Phase 9 is complete when:
+
+- a realistic first RL algorithm is chosen and run successfully
+- the baseline configuration is recorded clearly enough to reproduce the run
+- training is performed against the random opponent baseline
+- metric outputs are logged in a form suitable for plots and video explanation
+- a model checkpoint is saved for later evaluation in Phase 10
+- the notebook shows at least one quantitative sign of learning or non-learning

@@ -165,20 +165,20 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 9: Initial Training Run
 
-- [ ] Choose a first RL algorithm that is realistic for the assignment scope.
-- [ ] Set a small baseline training configuration.
-- [ ] Train against a random opponent first.
-- [ ] Record reward per episode or per evaluation window.
-- [ ] Record win rate against the chosen opponent.
-- [ ] Record draw rate and illegal move count if relevant.
-- [ ] Save a trained model checkpoint if supported by the chosen stack.
-- [ ] Log enough outputs to explain progress in the video.
+- [x] Choose a first RL algorithm that is realistic for the assignment scope.
+- [x] Set a small baseline training configuration.
+- [x] Train against a random opponent first.
+- [x] Record reward per episode or per evaluation window.
+- [x] Record win rate against the chosen opponent.
+- [x] Record draw rate and illegal move count if relevant.
+- [x] Save a trained model checkpoint if supported by the chosen stack.
+- [x] Log enough outputs to explain progress in the video.
 
 ### Validation
 
-- [ ] The training run completes end to end.
-- [ ] There is at least one quantitative sign of learning or non-learning.
-- [ ] The outputs are clear enough to show in the notebook and video.
+- [x] The training run completes end to end.
+- [x] There is at least one quantitative sign of learning or non-learning.
+- [x] The outputs are clear enough to show in the notebook and video.
 
 ## Phase 10: Evaluation and Behavior Review
 
