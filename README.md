@@ -1048,3 +1048,137 @@ Phase 10 is complete when:
 - at least one learned success pattern is identified
 - at least one meaningful failure mode is identified
 - there is a clear decision about whether another training pass is justified
+
+## Phase 11: Optional Web Demo Planning
+
+### Demo Scope Decision
+
+The web demo should be built as `human-vs-agent` for the first version.
+
+Reasoning:
+
+- it is the clearest format for a short tutorial video
+- it directly demonstrates the trained policy to a viewer
+- it avoids adding a second agent loop or extra controls before the demo path is stable
+- it keeps the scope small enough to fit the assignment timeline
+
+`Agent-vs-agent` can remain a stretch extension, but it should not be required for the first browser demo.
+
+### Recommended Architecture
+
+The simplest architecture is a thin browser frontend backed by a Python web server.
+
+Recommended split:
+
+- backend: Python service that owns game state, move validation, and model inference
+- frontend: small HTML, CSS, and JavaScript interface that renders the board and sends user moves
+
+The backend should reuse:
+
+- `Connect4Game` for game rules
+- the saved checkpoint `models/connect4_dqn_phase9.zip` for agent actions
+
+This keeps all rules and inference in Python and avoids duplicating Connect 4 logic in JavaScript.
+
+### Frontend-to-Backend Interaction
+
+The frontend should communicate with the backend using simple JSON requests.
+
+Recommended request flow:
+
+- `POST /api/new-game`
+Creates a fresh game session and returns the initial board state.
+
+- `POST /api/move`
+Accepts a game session identifier and a human-selected column, applies the human move, optionally applies the agent reply, and returns the updated game state.
+
+This is enough for the first version. A separate `GET /api/state` endpoint can be added later if the implementation needs explicit polling or reconnection support, but it is not necessary for the baseline plan.
+
+### Suggested Response Shape
+
+Each backend response should return a compact JSON object containing:
+
+- `board`: the 6 by 7 board grid
+- `current_player`: whose turn is next
+- `legal_actions`: the currently legal columns
+- `winner`: `null`, `1`, or `2`
+- `is_draw`: boolean
+- `is_terminal`: boolean
+- `last_move`: the latest `(row, column)` or a simple object with row and column fields
+- `agent_action`: the agent reply column when applicable
+- `message`: a short human-readable status string for the UI
+
+This shape is easy for the browser to render and stays close to the existing simulator and environment concepts.
+
+### Illegal-Move Prevention In The UI
+
+The browser UI should prevent illegal actions before the user clicks them.
+
+Recommended behavior:
+
+- render each column as a clickable target above the board
+- disable or visually mute columns that are not in `legal_actions`
+- ignore all input when `is_terminal` is true
+- do not let the frontend guess legality on its own beyond using the backend-provided `legal_actions`
+
+This keeps the frontend simple while still presenting a polished interaction model.
+
+### UI State And Status Display
+
+The interface should show these status elements clearly:
+
+- whose turn it is
+- whether the human or agent just moved
+- whether the game ended in a win or draw
+- a short status message such as `Your turn`, `Agent moved in column 3`, `You win`, `Agent wins`, or `Draw`
+
+The board itself should use the same semantics as the simulator:
+
+- empty cells
+- human player pieces
+- agent pieces
+
+The first version does not need complex animation. Clear state presentation is more important than polish.
+
+### Required Controls
+
+The first demo should include:
+
+- a `New Game` or `Reset` button
+
+The first demo does not need:
+
+- model selection
+- difficulty settings
+- alternate opponent modes
+
+Those controls can be added later only if the basic demo is already stable.
+
+### Integration Simplicity Requirement
+
+The web demo should remain a presentation layer only.
+
+That means:
+
+- no win checking in JavaScript
+- no separate board simulation in the frontend
+- no duplicated legality logic in the frontend beyond disabling columns from backend state
+
+This is the main architectural constraint for Phase 12.
+
+### Fallback Path
+
+The notebook remains a complete demonstration path even if the web demo is never implemented.
+
+This matters because the assignment can still be completed with the simulator, environment, notebook training run, and evaluation results already in the repository.
+
+### Phase 11 Exit Criteria
+
+Phase 11 is complete when:
+
+- the demo mode is fixed as a human-vs-agent browser experience
+- the frontend-backend interaction path is defined clearly enough to implement directly
+- the response shape contains the state the UI needs without reimplementing game logic
+- illegal-move prevention is defined as a UI behavior driven by backend legality data
+- the required status display and reset controls are specified
+- the notebook is still a complete fallback demonstration path if the browser demo is skipped

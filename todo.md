@@ -197,18 +197,18 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 11: Optional Web Demo Planning
 
-- [ ] Decide whether the demo will be human-vs-agent, agent-vs-agent, or both.
-- [ ] Decide how the frontend will send moves to the Python backend.
-- [ ] Decide how the frontend will receive board updates and end-state results.
-- [ ] Decide how the UI will prevent illegal moves.
-- [ ] Decide how the UI will display current player, winner, and draw outcomes.
-- [ ] Decide whether the interface needs model selection or reset controls.
+- [x] Decide whether the demo will be human-vs-agent, agent-vs-agent, or both.
+- [x] Decide how the frontend will send moves to the Python backend.
+- [x] Decide how the frontend will receive board updates and end-state results.
+- [x] Decide how the UI will prevent illegal moves.
+- [x] Decide how the UI will display current player, winner, and draw outcomes.
+- [x] Decide whether the interface needs model selection or reset controls.
 
 ### Validation
 
-- [ ] The web demo only presents the game and does not reimplement game logic.
-- [ ] The integration path from frontend to Python backend is simple and explainable.
-- [ ] The project still has a complete notebook-based demonstration path if the web demo is dropped.
+- [x] The web demo only presents the game and does not reimplement game logic.
+- [x] The integration path from frontend to Python backend is simple and explainable.
+- [x] The project still has a complete notebook-based demonstration path if the web demo is dropped.
 
 ## Phase 12: Optional Web Demo Implementation and Validation
 
