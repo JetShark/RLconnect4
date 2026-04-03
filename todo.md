@@ -146,22 +146,22 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 8: Notebook Structure and Training Setup
 
-- [ ] Create the Jupyter notebook structure for the tutorial.
-- [ ] Add a short markdown introduction to the project.
-- [ ] Add a section explaining the RL formulation.
-- [ ] Add a section walking through the simulator.
-- [ ] Add a section walking through the Gymnasium environment.
-- [ ] Add a section for training configuration.
-- [ ] Add a section for evaluation and plots.
-- [ ] Add a section for limitations and future directions.
-- [ ] Decide what Python libraries will be used for training and visualization.
-- [ ] Decide what seed or reproducibility settings will be recorded.
+- [x] Create the Jupyter notebook structure for the tutorial.
+- [x] Add a short markdown introduction to the project.
+- [x] Add a section explaining the RL formulation.
+- [x] Add a section walking through the simulator.
+- [x] Add a section walking through the Gymnasium environment.
+- [x] Add a section for training configuration.
+- [x] Add a section for evaluation and plots.
+- [x] Add a section for limitations and future directions.
+- [x] Decide what Python libraries will be used for training and visualization.
+- [x] Decide what seed or reproducibility settings will be recorded.
 
 ### Validation
 
-- [ ] The notebook tells a coherent story from problem definition to results.
-- [ ] The notebook sections match the parts of the assignment video.
-- [ ] The notebook can be used as both a development artifact and a presentation artifact.
+- [x] The notebook tells a coherent story from problem definition to results.
+- [x] The notebook sections match the parts of the assignment video.
+- [x] The notebook can be used as both a development artifact and a presentation artifact.
 
 ## Phase 9: Initial Training Run
 

@@ -832,3 +832,64 @@ Phase 7 is complete when:
 - invalid moves are handled consistently without bypassing simulator rules
 - the environment can run across repeated episodes without leaking state
 - automated tests cover reset behavior, normal transitions, and terminal outcomes
+
+## Phase 8: Notebook Structure and Training Setup
+
+### Implemented Files
+
+- `connect4_rl_tutorial.ipynb`: contains the tutorial notebook structure and baseline setup
+- `requirements.txt`: now includes the plotting dependency used by the notebook
+
+### Implemented Notebook Structure
+
+The notebook now includes these sections in order:
+
+- project introduction
+- RL formulation
+- simulator walkthrough
+- Gymnasium environment walkthrough
+- training configuration
+- evaluation and plot plan
+- limitations and future directions
+
+This structure matches the planned tutorial flow and can be used both as a development notebook and as the main visual artifact for the assignment video.
+
+### Recorded Setup Decisions
+
+The notebook now records the baseline setup choices for later training work:
+
+- reproducibility seed: `7`
+- environment libraries: `gymnasium` and `numpy`
+- visualization library: `matplotlib`
+- planned training stack for Phase 9: `stable-baselines3` and `torch`
+- baseline opponent: random legal-action policy
+- observation format: `dict(board, current_player)`
+- action masking: deferred
+
+### Validation Result
+
+Phase 8 validation was completed by executing representative notebook cells after configuring the notebook kernel.
+
+Validated notebook content:
+
+- import and setup cell
+- simulator walkthrough demo cell
+- Gymnasium environment walkthrough demo cell
+- training configuration cell
+- evaluation and plotting scaffold cell
+
+Current result:
+- notebook created successfully
+- notebook kernel configured successfully
+- 5 representative code cells executed successfully
+- no notebook setup errors encountered during validation
+
+### Phase 8 Exit Criteria
+
+Phase 8 is complete when:
+
+- the notebook has a clear section structure from problem framing through later evaluation
+- the notebook includes both explanatory markdown and working demonstration cells
+- baseline library choices and seed settings are recorded explicitly
+- the notebook is usable as both a build artifact and a presentation artifact
+- later training and evaluation work can be added without restructuring the notebook
