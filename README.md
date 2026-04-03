@@ -629,3 +629,146 @@ Phase 5 is complete when:
 - illegal move handling is defined as a negative terminal outcome for the baseline environment
 - the reward design is sparse and consistent with actual game outcomes
 - the first opponent is fixed as a random legal-action policy
+
+## Phase 6: Gymnasium Environment Design
+
+### Environment Role
+
+The Gymnasium environment should be a thin wrapper around `Connect4Game`, not a second implementation of Connect 4.
+
+Responsibilities of the wrapper:
+
+- reset simulator state at the start of each episode
+- accept the agent action as a column index
+- apply the agent move through the simulator
+- apply the random opponent move when the game is still active
+- translate simulator outcomes into Gymnasium observations, rewards, and flags
+- expose useful episode metadata in `info`
+
+This keeps the simulator as the single source of truth for legal moves, wins, draws, and terminal behavior.
+
+### Action Space Definition
+
+The baseline Gymnasium action space should be:
+
+- `gymnasium.spaces.Discrete(7)`
+
+Action mapping:
+
+- `0` through `6` map directly to the seven board columns
+
+This matches the Phase 5 action definition exactly and avoids any remapping layer between the agent and the simulator.
+
+### Observation Space Definition
+
+The baseline observation space should be a dictionary so the board and turn indicator stay explicit:
+
+- `board`: `gymnasium.spaces.Box(low=0, high=2, shape=(6, 7), dtype=np.int8)`
+- `current_player`: `gymnasium.spaces.Discrete(3)`
+
+Recommended observation structure:
+
+```python
+{
+	"board": np.ndarray(shape=(6, 7), dtype=np.int8),
+	"current_player": 1 or 2,
+}
+```
+
+Using a `Dict` observation keeps the first implementation easy to inspect and debug. It also matches the Phase 5 decision to expose current-player information directly instead of encoding it indirectly into board values.
+
+### Reset Behavior
+
+The environment `reset()` method should follow Gymnasium's standard contract.
+
+Planned behavior:
+
+- call `super().reset(seed=seed)` so seeding integrates with Gymnasium correctly
+- create or reset the wrapped `Connect4Game` instance
+- ensure the agent starts as player one for the baseline setup
+- return the initial observation and an `info` dictionary
+
+The initial observation should contain:
+
+- an empty 6 by 7 board
+- `current_player` set to player one
+
+The initial `info` dictionary should include at least:
+
+- `legal_actions`
+- `winner`
+- `is_draw`
+- `last_move`
+- `invalid_action`
+
+At reset time these values should indicate a fresh non-terminal game.
+
+### Step Behavior
+
+The environment `step(action)` method should represent one full training transition from the learning agent's perspective.
+
+Baseline step sequence:
+
+1. validate that the episode is not already finished
+2. try to apply the agent action through `Connect4Game`
+3. if the action is illegal, return the unchanged observation, reward `-1.0`, `terminated=True`, `truncated=False`, and mark the transition as an invalid action in `info`
+4. if the agent move wins the game, return reward `+1.0`, `terminated=True`, `truncated=False`
+5. if the agent move fills the board and causes a draw, return reward `0.0`, `terminated=True`, `truncated=False`
+6. if the game is still active, sample a random opponent move from the current legal actions
+7. apply the opponent move through the simulator
+8. if the opponent wins, return reward `-1.0`, `terminated=True`, `truncated=False`
+9. if the opponent causes a draw, return reward `0.0`, `terminated=True`, `truncated=False`
+10. otherwise return reward `0.0`, `terminated=False`, `truncated=False`
+
+This design means each Gymnasium step covers one agent decision and, when appropriate, one opponent response. That produces a clean single-agent RL loop without exposing a separate multi-agent turn protocol in the baseline project.
+
+### Info Dictionary Design
+
+The `info` dictionary should make debugging and notebook inspection easier without changing the core observation.
+
+Recommended fields:
+
+- `legal_actions`: list of currently available columns after the full step completes
+- `winner`: `None`, `1`, or `2`
+- `is_draw`: boolean draw indicator
+- `last_move`: most recent `(row, column)` tuple from the simulator
+- `invalid_action`: boolean flag for illegal agent actions
+- `opponent_action`: opponent column for that step, or `None` if no opponent move occurred
+
+These fields are enough to inspect transitions, plot metrics later, and explain episode outcomes in the notebook.
+
+### Reward, Termination, and Truncation Rules
+
+The environment should report outcomes according to the following baseline policy:
+
+- agent win: reward `+1.0`, `terminated=True`, `truncated=False`
+- opponent win: reward `-1.0`, `terminated=True`, `truncated=False`
+- draw: reward `0.0`, `terminated=True`, `truncated=False`
+- illegal action: reward `-1.0`, `terminated=True`, `truncated=False`
+- normal non-terminal transition: reward `0.0`, `terminated=False`, `truncated=False`
+
+The baseline environment does not need time-limit truncation, so `truncated` should remain `False` unless a later wrapper adds an external episode cap.
+
+### Action Masking Decision
+
+Action masking will be deferred for the first implementation.
+
+Baseline decision:
+
+- do not include an action mask in the observation space yet
+- do expose `legal_actions` in `info` for debugging and later extensions
+- keep invalid-action penalties enabled so the baseline agent learns from mistakes directly
+
+This keeps the first environment simple and consistent with the sparse-reward baseline. Action masking remains a valid improvement for later experiments, but it is not required to complete the initial tutorial.
+
+### Phase 6 Exit Criteria
+
+Phase 6 is complete when:
+
+- the Gymnasium action space is fixed as `Discrete(7)`
+- the observation space is defined explicitly as board data plus current-player information
+- the `reset()` method contract is documented with initial observation and `info` contents
+- the `step()` method contract is documented for valid actions, invalid actions, wins, losses, and draws
+- `info` fields are defined for debugging and evaluation support
+- reward, termination, and truncation behavior are fixed for the baseline environment
+- action masking is explicitly deferred as a later extension rather than left ambiguous

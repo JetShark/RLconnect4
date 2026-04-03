@@ -110,19 +110,19 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 6: Gymnasium Environment Design
 
-- [ ] Define the Gymnasium action space.
-- [ ] Define the Gymnasium observation space.
-- [ ] Plan the `reset()` behavior.
-- [ ] Plan the `step()` behavior.
-- [ ] Decide what goes into `info` for debugging and evaluation.
-- [ ] Decide how reward, termination, and truncation will be reported.
-- [ ] Decide whether action masking will be used now or deferred as a stretch goal.
+- [x] Define the Gymnasium action space.
+- [x] Define the Gymnasium observation space.
+- [x] Plan the `reset()` behavior.
+- [x] Plan the `step()` behavior.
+- [x] Decide what goes into `info` for debugging and evaluation.
+- [x] Decide how reward, termination, and truncation will be reported.
+- [x] Decide whether action masking will be used now or deferred as a stretch goal.
 
 ### Validation
 
-- [ ] The environment design matches Gymnasium expectations.
-- [ ] The environment does not duplicate game rules outside the simulator.
-- [ ] Illegal action handling is consistent and documented.
+- [x] The environment design matches Gymnasium expectations.
+- [x] The environment does not duplicate game rules outside the simulator.
+- [x] Illegal action handling is consistent and documented.
 
 ## Phase 7: Implement and Validate the Gymnasium Environment
 
