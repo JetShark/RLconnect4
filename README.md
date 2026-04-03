@@ -1182,3 +1182,73 @@ Phase 11 is complete when:
 - illegal-move prevention is defined as a UI behavior driven by backend legality data
 - the required status display and reset controls are specified
 - the notebook is still a complete fallback demonstration path if the browser demo is skipped
+
+## Phase 12: Web Demo Implementation and Validation
+
+### Implemented Files
+
+- `web_demo.py`: Flask backend that serves the browser demo, manages in-memory sessions, validates moves, and runs agent inference
+- `templates/index.html`: main browser UI shell
+- `static/app.css`: demo styling and responsive layout
+- `static/app.js`: frontend logic for new games, move submission, board rendering, and status updates
+- `tests/test_web_demo.py`: test coverage for the web demo page and API
+- `requirements.txt`: now includes `flask` for the web demo backend
+
+### Implemented Demo Behavior
+
+The web demo now supports:
+
+- a browser-based human-vs-agent game
+- a minimal 6 by 7 board display
+- column buttons for human move selection
+- backend-driven game sessions created through `/api/new-game`
+- backend move handling through `/api/move`
+- reset or new-game flow from the browser
+- status messages for turns, wins, losses, and draws
+- backend-provided legality used to disable invalid columns in the UI
+
+The human plays as `X` and moves first. The agent plays as `O` using the saved DQN checkpoint.
+
+### Backend Integration Notes
+
+The backend keeps the simulator as the source of truth:
+
+- `Connect4Game` handles move legality and terminal checks
+- the saved model `models/connect4_dqn_phase9.zip` provides the agent policy
+- the frontend only renders backend state and submits user actions
+
+For demo stability, the backend applies a legal fallback move if the trained model predicts an invalid action. When that happens, the API response includes that a fallback was used so the UI message can reflect it.
+
+### Implemented Validation Coverage
+
+The web demo test suite now validates:
+
+- the main page renders successfully
+- a new game returns the expected initial state
+- a move request applies both the human move and the agent reply
+- reset or new-game flow returns a fresh state
+- a full game can complete through the API without inconsistent state
+
+### Validation Result
+
+Phase 12 validation was completed in two layers:
+
+- automated test validation through the full unit test suite
+- live HTTP validation by starting the Flask server, opening the browser page, and completing a full game through the real API
+
+Current result:
+
+- full unittest suite: `25` tests run, `25` tests passed, `0` failures, `0` errors
+- browser page opened successfully at `http://127.0.0.1:8000`
+- live API game reached a terminal state with message `You win. Start a new game to play again.`
+
+### Phase 12 Exit Criteria
+
+Phase 12 is complete when:
+
+- the web demo renders a playable board in the browser
+- the human can submit moves through the UI
+- the backend applies simulator rules and agent replies correctly
+- reset flow works without stale session state
+- UI legality stays synchronized with backend legality
+- live validation confirms that full games can reach correct terminal states

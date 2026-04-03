@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect 4 Agent Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <p class="eyebrow">Connect 4 RL Demo</p>
+            <h1>Play against the trained agent in your browser.</h1>
+            <p class="summary">
+                You play as X and move first. The agent responds as O using the saved model
+                checkpoint from the training notebook.
+            </p>
+            <div class="hero-actions">
+                <button id="new-game-button" class="primary-button" type="button">New Game</button>
+                <div class="legend" aria-label="Piece legend">
+                    <span><i class="piece human"></i> Human</span>
+                    <span><i class="piece agent"></i> Agent</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="status-strip">
+                <div>
+                    <p class="label">Status</p>
+                    <p id="status-message" class="status-message">Loading game state...</p>
+                </div>
+                <div>
+                    <p class="label">Turn</p>
+                    <p id="turn-indicator" class="status-value">-</p>
+                </div>
+                <div>
+                    <p class="label">Outcome</p>
+                    <p id="outcome-indicator" class="status-value">In progress</p>
+                </div>
+            </div>
+
+            <div id="column-controls" class="column-controls" aria-label="Column controls"></div>
+            <div id="board" class="board" aria-label="Connect 4 board"></div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

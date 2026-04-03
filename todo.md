@@ -212,20 +212,20 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 12: Optional Web Demo Implementation and Validation
 
-- [ ] Build a minimal board display.
-- [ ] Add column selection input.
-- [ ] Connect frontend moves to backend simulator or environment logic.
-- [ ] Show the agent move response.
-- [ ] Show game-end messages.
-- [ ] Add reset functionality.
-- [ ] Prevent illegal interactions in the UI.
-- [ ] Run full demo games manually.
+- [x] Build a minimal board display.
+- [x] Add column selection input.
+- [x] Connect frontend moves to backend simulator or environment logic.
+- [x] Show the agent move response.
+- [x] Show game-end messages.
+- [x] Add reset functionality.
+- [x] Prevent illegal interactions in the UI.
+- [x] Run full demo games manually.
 
 ### Validation
 
-- [ ] A human can complete a full game against the agent in the browser.
-- [ ] The UI state remains consistent with backend game state.
-- [ ] Game outcomes shown in the UI match the simulator results.
+- [x] A human can complete a full game against the agent in the browser.
+- [x] The UI state remains consistent with backend game state.
+- [x] Game outcomes shown in the UI match the simulator results.
 
 ## Phase 13: Video Preparation
 

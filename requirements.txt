@@ -3,3 +3,4 @@ numpy
 matplotlib
 stable-baselines3
 torch
+flask
