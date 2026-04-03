@@ -94,19 +94,19 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 5: RL Problem Definition
 
-- [ ] Write the RL mapping for Connect 4: agent, environment, state, action, reward, and policy.
-- [ ] Decide what the observation includes.
-- [ ] Decide whether current-player information will be included directly or encoded into the board representation.
-- [ ] Decide what action values correspond to the seven columns.
-- [ ] Decide how illegal moves will be handled during training.
-- [ ] Write the first reward design.
-- [ ] Decide what opponent the first training run will use.
+- [x] Write the RL mapping for Connect 4: agent, environment, state, action, reward, and policy.
+- [x] Decide what the observation includes.
+- [x] Decide whether current-player information will be included directly or encoded into the board representation.
+- [x] Decide what action values correspond to the seven columns.
+- [x] Decide how illegal moves will be handled during training.
+- [x] Write the first reward design.
+- [x] Decide what opponent the first training run will use.
 
 ### Validation
 
-- [ ] The RL definitions are specific enough to explain in the video without ambiguity.
-- [ ] The reward design does not conflict with the actual game rules.
-- [ ] The first opponent strategy is simple enough to train against and explain clearly.
+- [x] The RL definitions are specific enough to explain in the video without ambiguity.
+- [x] The reward design does not conflict with the actual game rules.
+- [x] The first opponent strategy is simple enough to train against and explain clearly.
 
 ## Phase 6: Gymnasium Environment Design
 

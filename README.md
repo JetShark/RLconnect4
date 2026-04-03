@@ -524,3 +524,108 @@ Phase 4 is complete when:
 - the validation tests pass cleanly
 - invalid state transitions are blocked
 - the engine is stable enough to be wrapped in Gymnasium next
+
+## Phase 5: RL Problem Definition
+
+### RL Mapping for Connect 4
+
+The first reinforcement learning setup will treat the trained player as a single learning agent that acts as player one.
+
+- Agent: the policy being trained to choose Connect 4 columns.
+- Environment: the Connect 4 simulator plus the environment wrapper that applies the agent move, advances the opponent turn, and returns the resulting transition.
+- State: the full simulator state consisting of the board, current player, terminal flag, winner, and last move.
+- Observation: the board plus an explicit current-player indicator exposed to the agent.
+- Action: one discrete choice from the seven board columns.
+- Reward: a scalar returned after each environment step to reflect win, loss, draw, invalid move, or neutral progress.
+- Policy: the mapping from observation to a probability distribution or preference over the seven columns.
+
+This framing keeps the RL explanation aligned with the existing simulator while still fitting standard Gymnasium training loops.
+
+### First Observation Design
+
+The initial observation should include:
+
+- the current 6 by 7 board grid
+- the current player identifier
+
+Recommended interpretation:
+
+- board values remain `0` for empty, `1` for player one, and `2` for player two
+- current player is provided separately as a scalar flag rather than hidden inside the board encoding
+
+This choice is more explicit than trying to infer turn order from the board alone. It also keeps the observation close to the simulator's source-of-truth state, which makes debugging easier in the notebook and in early environment tests.
+
+### Current-Player Encoding Decision
+
+Current-player information will be included directly, not inferred indirectly from the board.
+
+Reasoning:
+
+- it avoids ambiguity when the environment is reset or when later variants change which side the agent controls
+- it keeps the observation definition easy to explain in the video
+- it reduces unnecessary preprocessing before the first training run
+
+If a later experiment wants an agent-centric encoding such as `1`, `0`, and `-1`, that can be treated as a later optimization rather than the baseline design.
+
+### Action Definition
+
+The action set is fixed to the seven legal board columns:
+
+- action `0` maps to the leftmost column
+- action `1` maps to column 1
+- action `2` maps to column 2
+- action `3` maps to column 3
+- action `4` maps to column 4
+- action `5` maps to column 5
+- action `6` maps to the rightmost column
+
+The action space therefore stays stable even when some columns are temporarily full. Legality is handled by the environment, not by changing the action meanings during play.
+
+### Illegal Move Handling During Training
+
+Illegal actions will be handled as explicit training errors rather than silently corrected.
+
+Baseline handling policy:
+
+- the environment accepts actions in the fixed range `0` through `6`
+- if the chosen column is full or the action is otherwise invalid, the environment returns a negative reward
+- the episode terminates immediately after an illegal action
+- the `info` dictionary should record that the episode ended due to an invalid move
+
+This preserves the simulator's strict rule enforcement and gives the agent a clear signal that invalid moves are bad. Action masking can be considered later as a stretch improvement, but it will not be part of the first baseline.
+
+### First Reward Design
+
+The initial reward design should stay simple and easy to justify:
+
+- win: `+1.0`
+- loss: `-1.0`
+- draw: `0.0`
+- valid non-terminal move: `0.0`
+- illegal move: `-1.0`
+
+This reward scheme is intentionally sparse. It matches the game objective directly and avoids reward shaping that might encourage unnatural short-term behavior before the baseline system is working.
+
+If the notebook later shows that learning is too slow or unstable, small shaping terms can be explored as a documented extension rather than mixed into the first experiment.
+
+### First Opponent Choice
+
+The first training run should use a random opponent that selects uniformly from the currently legal columns.
+
+This is the right baseline because:
+
+- it is easy to implement correctly
+- it is easy to explain in the tutorial video
+- it gives the agent a non-trivial but manageable learning target
+- it creates a clear comparison point for later experiments against stronger opponents or self-play
+
+### Phase 5 Exit Criteria
+
+Phase 5 is complete when:
+
+- the RL mapping from Connect 4 to agent, environment, state, observation, action, reward, and policy is written explicitly
+- the baseline observation includes the board and a direct current-player indicator
+- the action mapping is fixed to columns `0` through `6`
+- illegal move handling is defined as a negative terminal outcome for the baseline environment
+- the reward design is sparse and consistent with actual game outcomes
+- the first opponent is fixed as a random legal-action policy
