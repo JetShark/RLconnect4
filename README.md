@@ -972,3 +972,79 @@ Phase 9 is complete when:
 - metric outputs are logged in a form suitable for plots and video explanation
 - a model checkpoint is saved for later evaluation in Phase 10
 - the notebook shows at least one quantitative sign of learning or non-learning
+
+## Phase 10: Evaluation and Behavior Review
+
+### Implemented Files
+
+- `connect4_rl_tutorial.ipynb`: now contains checkpoint evaluation, random-baseline comparison, captured sample end boards, and an evaluation summary
+
+### Evaluation Setup
+
+Phase 10 evaluates the saved checkpoint `models/connect4_dqn_phase9.zip` after training and compares it against a random-action agent under the same environment.
+
+Evaluation configuration:
+
+- trained policy: saved DQN checkpoint with deterministic actions
+- comparison policy: random legal-action baseline
+- episodes per policy: `200`
+- opponent: random legal-action policy in the environment
+- seed schedule: `SEED + episode_index`
+
+### Comparison Result
+
+Observed evaluation metrics:
+
+- trained checkpoint: mean reward `0.36`, win rate `0.68`, loss rate `0.005`, draw rate `0.315`, invalid-action count `63`
+- random baseline: mean reward `0.16`, win rate `0.58`, loss rate `0.42`, draw rate `0.0`, invalid-action count `0`
+
+This gives a direct comparison point for the tutorial: the trained agent is clearly stronger than the random baseline in reward and win rate, but still has a major reliability problem.
+
+### Captured Example End Boards
+
+The notebook now includes sample end boards for:
+
+- a trained-agent win
+- a trained-agent loss
+- a trained-agent draw
+
+These examples can be shown directly in the video to illustrate different outcome types without requiring live gameplay during narration.
+
+### What The Agent Learned
+
+One visible success pattern is that the trained agent often builds vertical threats in central columns. The sampled win board shows a four-in-a-column finish, suggesting the policy learned at least one consistent tactical motif rather than behaving like pure random play.
+
+The trained checkpoint also improved over the random baseline on the main performance metrics:
+
+- higher mean reward
+- higher win rate
+- dramatically lower loss rate
+
+### What The Agent Still Does Poorly
+
+The main failure mode is invalid action selection. Across `200` evaluation episodes, the trained checkpoint still produced `63` invalid actions, which means the policy frequently tries to play illegal moves even after learning to win many valid games.
+
+This is important to discuss in the tutorial because it shows that a policy can look successful on headline win metrics while still being brittle in a way that matters for environment correctness and user-facing demos.
+
+### Decision On Another Training Pass
+
+Another training pass is worthwhile.
+
+Reasoning:
+
+- the current checkpoint already beats the random baseline
+- the invalid-action count is still far too high
+- a longer run or an action-masking variant could plausibly reduce that failure mode
+
+This makes Phase 10 a good stopping point for the first baseline while leaving a concrete improvement path for later work.
+
+### Phase 10 Exit Criteria
+
+Phase 10 is complete when:
+
+- the saved checkpoint is evaluated after training
+- the trained policy is compared directly against a random baseline
+- example win, loss, and draw end states are captured
+- at least one learned success pattern is identified
+- at least one meaningful failure mode is identified
+- there is a clear decision about whether another training pass is justified

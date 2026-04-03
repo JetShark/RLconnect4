@@ -182,18 +182,18 @@ Work phase by phase. Do not start the next phase until the validation items for 
 
 ## Phase 10: Evaluation and Behavior Review
 
-- [ ] Run evaluation games after training.
-- [ ] Compare trained behavior against the random baseline.
-- [ ] Capture example board states from wins, losses, and draws.
-- [ ] Identify at least one success pattern the agent learned.
-- [ ] Identify at least one weakness or failure mode.
-- [ ] Decide whether another training pass is worthwhile.
+- [x] Run evaluation games after training.
+- [x] Compare trained behavior against the random baseline.
+- [x] Capture example board states from wins, losses, and draws.
+- [x] Identify at least one success pattern the agent learned.
+- [x] Identify at least one weakness or failure mode.
+- [x] Decide whether another training pass is worthwhile.
 
 ### Validation
 
-- [ ] There is evidence for what the agent learned.
-- [ ] There is evidence for what the agent still does poorly.
-- [ ] The evaluation results are simple enough to explain in under one minute of video time.
+- [x] There is evidence for what the agent learned.
+- [x] There is evidence for what the agent still does poorly.
+- [x] The evaluation results are simple enough to explain in under one minute of video time.
 
 ## Phase 11: Optional Web Demo Planning
 
